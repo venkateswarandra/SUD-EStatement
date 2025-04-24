@@ -19,8 +19,9 @@ import java.util.List;
 public class BposApiServices {
     @Autowired
     private RestTemplate restTemplate;
-    public List<BposMessageMasterDTO> messages=null;
+    public volatile List<BposMessageMasterDTO> messages=null;
     public UserSessionInfoDTO externalSecurity(AuthResponse authResponse){
+        fetchAllMessageCodes();
         UserSessionInfoDTO userSessionInfo=null;
         String uri="http://192.168.2.24:8080/bpos2.0/sud/bpos/getUserSessionInfoByJWT";
         HttpHeaders headers = new HttpHeaders();
@@ -32,20 +33,24 @@ public class BposApiServices {
         }
         return userSessionInfo;
     }
-    @PostConstruct
-    public void init() {
-        messages = fetchAllMessageCodes();
 
-    }
+    // messages = fetchAllMessageCodes();
 
-    public List<BposMessageMasterDTO> fetchAllMessageCodes() {
-        List<BposMessageMasterDTO> messageList = new ArrayList<>();
-        String uri = "http://192.168.2.24:8080/bpos2.0/sud/bpos/getAllMessageCode";
-        ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
-        if (response.getBody() != null && response.getStatusCode().is2xxSuccessful()) {
-            messageList = BposUtils.jsonAsList(response.getBody(), BposMessageMasterDTO.class);
+
+    public void  fetchAllMessageCodes() {
+        if(messages==null) {
+            synchronized  (this){
+                if(messages==null) {
+                    messages = new ArrayList<>();
+                    String uri = "http://192.168.2.24:8080/bpos2.0/sud/bpos/getAllMessageCode";
+                    ResponseEntity<String> response = restTemplate.getForEntity(uri, String.class);
+                    if (response.getBody() != null && response.getStatusCode().is2xxSuccessful()) {
+                        messages = BposUtils.jsonAsList(response.getBody(), BposMessageMasterDTO.class);
+                    }
+                }
+            }
         }
-        return messageList;
+
     }
 
 }
