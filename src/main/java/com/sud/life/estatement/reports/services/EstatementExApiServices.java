@@ -113,16 +113,16 @@ public class EstatementExApiServices {
             if (jasperReport == null) {
                 jasperReport = JasperCompileManager.compileReport(jrxmlFile.getAbsolutePath());
             }
-            String instAmountStr = responseBody.getProposalDeposite().getInstAmount();
+           /* String instAmountStr = responseBody.getProposalDeposite().getInstAmount();
             String amountInWords = "";
             if (instAmountStr != null && !instAmountStr.trim().isEmpty()) {
                 long instAmount = (long) Double.parseDouble(instAmountStr);
                 amountInWords = NumberToWordsConverter.convert(instAmount);
             }
-            responseBody.getProposalDeposite().setInstAmountWord(amountInWords);
+            responseBody.getProposalDeposite().setInstAmountWord(amountInWords);*/
             String instAmount=responseBody.getProposalDeposite().getInstAmountWord();
             String jsonString = objectMapper.writeValueAsString(responseBody);
-            String base64 = JasperReportUtil.generateBase64PdfFromJson(jsonString, jasperReport, paths, instAmount);
+            String base64 = JasperReportUtil.generateBase64PdfFromJson(jsonString, jasperReport, paths);
             return ResponseEntity.ok(APIResponse.<String>builder().status(HttpStatus.OK.value()).message("Proposal deposit report generated successfully.").data(base64).reportFileName("proposal-deposit.pdf").build());
         } catch (IOException | JRException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(APIResponse.<String>builder().status(HttpStatus.INTERNAL_SERVER_ERROR.value()).message("Error generating report: " + e.getMessage()).data(null).build());
@@ -520,7 +520,7 @@ public class EstatementExApiServices {
                 }
             }
 
-            String base64 = JasperReportUtil.generateBase64PdfFromJson(jsonString, jasperReport, paths, null);
+            String base64 = JasperReportUtil.generateBase64PdfFromJson(jsonString, jasperReport, paths);
             return ResponseEntity.ok(APIResponse.<String>builder()
                     .status(HttpStatus.OK.value())
                     .message("Annual unit statement report generated successfully.")
@@ -544,4 +544,43 @@ public class EstatementExApiServices {
                     .build());
         }
     }
+
+   /* public ResponseEntity<APIResponse<String>> getOrphanPolicies(@RequestBody OrphanPolicyRequestDTO requestDTO) {
+        try {
+            if (requestDTO.getAgent_no() == null || requestDTO.getAgent_no().trim().isEmpty()) {
+                return ResponseEntity.badRequest().body(APIResponse.<String>builder().status(HttpStatus.BAD_REQUEST.value()).message("agent number should not be null or empty.").data(null).build());
+            }
+            String uri = bposApiServices.keys.stream().filter(x -> x.getConfigKey().equals(BposConfigConstants.ORPHAN_POLICY_RECEIPT.getValue())).findFirst().get().getConfigValue();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+            HttpEntity<OrphanPolicyRequestDTO> requestEntity = new HttpEntity<>(requestDTO, headers);
+            ResponseEntity<OrphanPolicyResponseDTO> response = restTemplate.postForEntity(uri, requestEntity, OrphanPolicyResponseDTO.class);
+            OrphanPolicyResponseDTO responseBody = response.getBody();
+            if (responseBody == null || responseBody.getOrphanPolicy() == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(APIResponse.<String>builder().status(HttpStatus.NOT_FOUND.value()).message("No data available for the given policy number.").data(null).build());
+            }
+            JBossHomeDirFetcher.ReportPaths paths = jBossHomeDirFetcher.FetchPathService();
+            File jrxmlFile = new File(paths.getJrxmlPath() + "/Proposal Deposite Receipt.jrxml");
+            if (!jrxmlFile.exists()) {
+                throw new IOException("JRXML file not found: " + jrxmlFile.getPath());
+            }
+            if (jasperReport == null) {
+                jasperReport = JasperCompileManager.compileReport(jrxmlFile.getAbsolutePath());
+            }
+           *//* String instAmountStr = responseBody.getOrphanPolicy().getInstAmount();
+            String amountInWords = "";
+            if (instAmountStr != null && !instAmountStr.trim().isEmpty()) {
+                long instAmount = (long) Double.parseDouble(instAmountStr);
+                amountInWords = NumberToWordsConverter.convert(instAmount);
+            }
+            responseBody.getProposalDeposite().setInstAmountWord(amountInWords);
+            String instAmount=responseBody.getProposalDeposite().getInstAmountWord();
+            String jsonString = objectMapper.writeValueAsString(responseBody);*//*
+            String base64 = JasperReportUtil.generateBase64PdfFromJson(jsonString, jasperReport, paths);
+            return ResponseEntity.ok(APIResponse.<String>builder().status(HttpStatus.OK.value()).message("Proposal deposit report generated successfully.").data(base64).reportFileName("proposal-deposit.pdf").build());
+        } catch (IOException | JRException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(APIResponse.<String>builder().status(HttpStatus.INTERNAL_SERVER_ERROR.value()).message("Error generating report: " + e.getMessage()).data(null).build());
+        }
+    }*/
 }

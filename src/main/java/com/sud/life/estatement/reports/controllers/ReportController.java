@@ -62,8 +62,8 @@ public class ReportController {
     public  ResponseEntity<APIResponse<String>> getProposalData(@RequestBody ProposalDepositRequestDTO requestDTO)  {
         return estatementExApiServices.getProposalDepositData(requestDTO);
     }
-   /* @PostMapping("/getOrphanPolicyStatement")
+   /*@PostMapping("/getOrphanPolicyStatement")
     public ResponseEntity<APIResponse<String>> getOrphanPolicy(@RequestBody OrphanPolicyRequestDTO request) {
-        return reportService.getOrphanPolicies(request);
+        return estatementExApiServices.getOrphanPolicies(request);
     }*/
 }

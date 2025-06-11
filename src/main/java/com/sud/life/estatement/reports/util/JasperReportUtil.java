@@ -25,8 +25,7 @@ public class JasperReportUtil {
     public static String generateBase64PdfFromJson(
             String jsonString,
             JasperReport jasperReport,
-            JBossHomeDirFetcher.ReportPaths paths,
-            String instAmount
+            JBossHomeDirFetcher.ReportPaths paths
     ) throws JRException, IOException {
 
         try (InputStream jsonStream = new ByteArrayInputStream(jsonString.getBytes(StandardCharsets.UTF_8))) {
@@ -37,7 +36,7 @@ public class JasperReportUtil {
             params.put(UtilConstants.FOOTER_IMG, paths.getImagePath());
             SimpleDateFormat sdf = new SimpleDateFormat(UtilConstants.DATE_FORMAT);
             params.put(UtilConstants.DATE, sdf.format(new Date()));
-            params.put(UtilConstants.AMOUNT_IN_WORDS,instAmount);
+            //params.put(UtilConstants.AMOUNT_IN_WORDS,instAmount);
             // Add Amount in Words if available
           /*  if (instAmountStr != null && !instAmountStr.trim().isEmpty()) {
                 long instAmount = (long) Double.parseDouble(instAmountStr);

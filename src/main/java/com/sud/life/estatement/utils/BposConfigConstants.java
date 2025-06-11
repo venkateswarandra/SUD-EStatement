@@ -7,7 +7,7 @@ public enum BposConfigConstants {
 
     CONFIG_VALUE_BY_KEY("sud.eStatement.bposApi.ConfigValueByKey"),
     PROPOSAL_DEPOSITE_RECEIPT("sud.eStatement.proposal_deposite_recipt"),
-
+    ORPHAN_POLICY_RECEIPT("sud.eStatement.orphan_policy_receipt"),
     JBOSS_HOME_DEFAULT_LOCATION("F:/JBOSS_SERVER/jboss-eap-8.0");
 
     final String configKey;
