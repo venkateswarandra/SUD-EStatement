@@ -3,3 +3,24 @@ logging:
     org:
       hibernate:
         SQL: DEBUG
+
+bpos:
+  apis:
+    userSessionsByJwt: "http://192.168.2.24:8080/bpos2.0/sud/bpos/getUserSessionInfoByJWT"
+    messageCodes: "http://192.168.2.24:8080/bpos2.0/sud/bpos/getAllMessageCode"
+    configValues: "http://192.168.2.24:8080/bpos2.0/sud/bpos/getAllConfigValueByKey"
+
+
+mail:
+  smtp:
+    host: smtp.gmail.com
+    port: 587
+    auth: true
+    starttls:
+      enable: true
+    ssl:
+      enable: false
+    username: sowmya.p@nichebit.com
+    password: ihel nvwr unfd sduk
+
+
