@@ -34,10 +34,8 @@ public class JsonReStructureService {
         for(UnitStatementDetails e : udOld){
             if(e.getUnitLinkedFund().equalsIgnoreCase("EQFD")){
                 udNewEQFE.add(e);
-                System.out.println("this is executed1");
             }else if(e.getUnitLinkedFund().equalsIgnoreCase("BALFD")||e.getUnitLinkedFund().equalsIgnoreCase("BLFD")){
                 udNewBALFD.add(e);
-                System.out.println("this is executed2");
             }
         }
 
@@ -50,10 +48,8 @@ public class JsonReStructureService {
 
             if(fdNew.getVFund().equalsIgnoreCase("EQFD")){
                 fdNew.setUnitStatementDetailsBean(udNewEQFE);
-                System.out.println("this is executed3");
             }else if(fdNew.getVFund().equalsIgnoreCase("BALFD")||fdNew.getVFund().equalsIgnoreCase("BLFD")){
                 fdNew.setUnitStatementDetailsBean(udNewBALFD);
-                System.out.println("this is executed4");
             }
             fundDetailsNew.add(fdNew);
         }
