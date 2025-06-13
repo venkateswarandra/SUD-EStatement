@@ -16,9 +16,7 @@ public class JsonReStructureController {
     private JsonReStructureService jsonReStructureService;
 
     @PostMapping("/old-to-new")
-    public DataSourceNew ausChange(@RequestBody RootWrapper rootWrapper){
-        DataSourceOld dataSourceOld = rootWrapper.getDataSource();
-        System.out.println(dataSourceOld);
+    public DataSourceNew ausChange(@RequestBody DataSourceOld dataSourceOld){
         return jsonReStructureService.ausChange(dataSourceOld);
     }
 
